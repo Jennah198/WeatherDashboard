@@ -1,35 +1,41 @@
-// src/App.js
+// src/App.jsx
 
 import React, { useState } from 'react';
 import SearchBar from './components/SearchBar';
-import { getWeatherData, getForecastData } from './services/api'; // Import getForecastData
+import { getWeatherData, getForecastData } from './services/api';
 import WeatherCard from './components/WeatherCard';
 import ErrorMessage from './components/ErrorMessage';
 import { ClipLoader } from 'react-spinners';
-import Forecast from './components/Forecast'; // Import Forecast
+import Forecast from './components/Forecast';
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
-  const [forecastData, setForecastData] = useState(null); // Add forecastData state
+  const [forecastData, setForecastData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [forecastLoading, setForecastLoading] = useState(false); // Add forecastLoading state
+  const [forecastError, setForecastError] = useState(null); // Add forecastError state
 
   const handleSearch = async (city) => {
     setLoading(true);
     setError(null);
+    setForecastLoading(true); // Set forecast loading to true
+    setForecastError(null); // Clear forecast error
+
     try {
       const weather = await getWeatherData(city);
       setWeatherData(weather);
 
-      const forecast = await getForecastData(city); // Fetch forecast data
-      setForecastData(forecast); // Store forecast data
-
+      const forecast = await getForecastData(city);
+      setForecastData(forecast);
     } catch (err) {
       setError(err.message);
       setWeatherData(null);
-      setForecastData(null); // Clear forecast data on error
+      setForecastData(null);
+      setForecastError(err.message); // Set forecast error
     } finally {
       setLoading(false);
+      setForecastLoading(false); // Set forecast loading to false
     }
   };
 
@@ -42,7 +48,9 @@ function App() {
           {loading && <ClipLoader size={40} color="#1D4ED8" />}
           {error && <ErrorMessage message={error} />}
           {weatherData && <WeatherCard data={weatherData} />}
-          {forecastData && <Forecast forecastData={forecastData} />} {/* Render Forecast */}
+          {forecastLoading && <ClipLoader size={40} color="#1D4ED8" />} {/* Forecast loading */}
+          {forecastError && <ErrorMessage message={forecastError} />} {/* Forecast error */}
+          {forecastData && <Forecast forecastData={forecastData} />}
         </div>
       </div>
     </div>
