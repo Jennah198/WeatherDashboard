@@ -21,3 +21,23 @@ export const getWeatherData = async (city) => {
     throw error;
   }
 };
+
+export const getForecastData = async (city) => {
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('City not found');
+      } else {
+        throw new Error('Failed to fetch forecast data');
+      }
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Forecast API Error:', error);
+    throw error;
+  }
+};
