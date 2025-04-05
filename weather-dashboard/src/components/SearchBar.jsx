@@ -1,4 +1,4 @@
-// src/components/SearchBar.js
+// src/components/SearchBar.jsx
 
 import React, { useState } from 'react';
 
@@ -7,17 +7,20 @@ const SearchBar = ({ onSearch }) => {
 
   const handleInputChange = (event) => {
     setCity(event.target.value);
+    console.log('Input changed:', event.target.value);
   };
 
   const handleSearch = () => {
+    console.log('Search button clicked, city:', city);
     if (city.trim()) {
       onSearch(city);
-      setCity(''); // Clear input after search
+      setCity('');
     }
   };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
+      console.log('Enter key pressed, city:', city);
       handleSearch();
     }
   };
@@ -28,8 +31,8 @@ const SearchBar = ({ onSearch }) => {
         type="text"
         placeholder="Enter city name"
         value={city}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
+        onChange={handleInputChange} // Ensure this is correct
+        onKeyDown={handleKeyDown} // Ensure this is correct
         className="border p-2 rounded"
       />
       <button
