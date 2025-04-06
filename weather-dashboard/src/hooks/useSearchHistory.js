@@ -1,28 +1,16 @@
-// src/hooks/useSearchHistory.js
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const useSearchHistory = () => {
-  const [searchHistory, setSearchHistory] = useState(() => {
-    const storedHistory = localStorage.getItem('searchHistory');
-    return storedHistory ? JSON.parse(storedHistory) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-  }, [searchHistory]);
+  const [searchHistory, setSearchHistory] = useState([]);
 
   const addSearch = (city) => {
-    if (!searchHistory.includes(city)) {
-      setSearchHistory([...searchHistory, city]);
-    }
+    setSearchHistory((prev) => {
+      const updated = [city, ...prev.filter((c) => c !== city)].slice(0, 5);
+      return updated;
+    });
   };
 
-  const clearSearchHistory = () => {
-    setSearchHistory([]);
-  };
-
-  return { searchHistory, addSearch, clearSearchHistory };
+  return { searchHistory, addSearch };
 };
 
 export default useSearchHistory;
