@@ -56,11 +56,11 @@ function App() {
       <div className="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-4 sm:p-6 flex flex-col justify-center min-h-[80vh]">
         <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6 text-blue-700">Weather Dashboard</h1>
 
-        <div className="flex justify-center mb-6">
-          <SearchBar onSearch={handleSearch} searchHistory={searchHistory} />
+        <div className="flex flex-col sm:flex-row justify-center mb-6">
+          <SearchBar onSearch={handleSearch} searchHistory={searchHistory} className="w-full sm:w-auto" />
           {searchHistory.length > 0 && (
             <button
-              className="ml-2 px-3 py-1 bg-gray-200 rounded text-sm"
+              className="mt-2 sm:mt-0 sm:ml-2 px-3 py-1 bg-gray-200 rounded text-sm"
               onClick={clearSearchHistory}
             >
               Clear History
@@ -68,16 +68,16 @@ function App() {
           )}
         </div>
 
-        <div className="mt-6 w-full">
+        <div className="mt-6 flex flex-col items-center mx-auto"> {/* Removed w-full, added mx-auto */}
           {loading && (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center justify-center">
               <ClipLoader size={40} color="#1D4ED8" />
               <p className="mt-2 text-sm text-gray-600">Loading weather data...</p>
             </div>
           )}
 
           {error && (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center justify-center">
               <ErrorMessage message={error} />
               <button
                 className="mt-2 px-3 py-1 bg-blue-500 text-white rounded text-sm"
@@ -95,7 +95,7 @@ function App() {
           )}
 
           {forecastLoading && (
-            <div className="flex flex-col items-center mt-4">
+            <div className="flex flex-col items-center justify-center mt-4">
               <ClipLoader size={40} color="#1D4ED8" />
               <p className="mt-2 text-sm text-gray-600">Loading forecast data...</p>
             </div>
