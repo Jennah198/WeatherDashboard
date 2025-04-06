@@ -1,16 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const useSearchHistory = () => {
-  const [searchHistory, setSearchHistory] = useState([]);
+const useSearchHistory = (limit = 5) => {
+  const [searchHistory, setSearchHistory] = useState(() => {
+    const storedHistory = localStorage.getItem('searchHistory');
+    return storedHistory ? JSON.parse(storedHistory) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+  }, [searchHistory]);
 
   const addSearch = (city) => {
-    setSearchHistory((prev) => {
-      const updated = [city, ...prev.filter((c) => c !== city)].slice(0, 5);
-      return updated;
+    setSearchHistory((prevHistory) => {
+      const updatedHistory = [city, ...prevHistory.filter((item) => item !== city)].slice(0, limit);
+      return updatedHistory;
     });
   };
 
-  return { searchHistory, addSearch };
+  const clearSearchHistory = () => {
+    setSearchHistory([]);
+  };
+
+  return { searchHistory, addSearch, clearSearchHistory };
 };
 
 export default useSearchHistory;

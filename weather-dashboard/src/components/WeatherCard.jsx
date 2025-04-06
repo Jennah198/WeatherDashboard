@@ -1,25 +1,26 @@
 import React from 'react';
 
 const WeatherCard = ({ data }) => {
-  const { name, main, weather, wind } = data;
+  if (!data) return null;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center w-full max-w-sm mx-auto">
-      <h2 className="text-2xl font-bold mb-2 text-blue-700 dark:text-blue-300">{name}</h2>
-      <p className="capitalize text-gray-600 dark:text-gray-400">{weather[0].description}</p>
-      
-      <img
-        src={`https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`}
-        alt={weather[0].description}
-        className="mx-auto w-20 h-20 my-4"
-      />
-
-      <div className="space-y-2 text-gray-800 dark:text-gray-100">
-        <p><span className="font-semibold">Temperature:</span> {Math.round(main.temp)}°C</p>
-        <p><span className="font-semibold">Feels Like:</span> {Math.round(main.feels_like)}°C</p>
-        <p><span className="font-semibold">Humidity:</span> {main.humidity}%</p>
-        <p><span className="font-semibold">Wind:</span> {wind.speed} m/s</p>
-        <p><span className="font-semibold">Pressure:</span> {main.pressure} hPa</p>
+    <div className="bg-white rounded-lg shadow-md p-6 mt-6 w-full">
+      <h2 className="text-2xl font-semibold mb-4 text-blue-700">
+        {data.name}, {data.sys.country}
+      </h2>
+      <div className="flex items-center mb-4">
+        <img
+          src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
+          alt={`Weather icon: ${data.weather[0].description}`}
+          className="w-20 h-20 mr-4"
+        />
+        <p className="text-4xl font-bold">{data.main.temp}°C</p>
+      </div>
+      <p className="text-lg mb-4">{data.weather[0].description}</p>
+      <div className="flex flex-col">
+        <p>Temperature: {data.main.temp}°C</p>
+        <p>Wind Speed: {data.wind.speed} m/s</p>
+        <p>Humidity: {data.main.humidity}%</p>
       </div>
     </div>
   );
